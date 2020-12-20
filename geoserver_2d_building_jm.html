@@ -1,0 +1,72 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-11-25 09:09:02
+ * @LastEditTime: 2020-11-25 12:54:28
+ * @LastEditors: Please set LastEditors
+ * @Description: 尝试使用mvt+geoserver，成功。环境是家中的geoserver+虚拟机的数据库。
+ * @FilePath: \undefinedd:\mapbox+geoserver1125\mapbox+geoserver\mapbox\geoserver.html
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8' />
+        <title>Display buildings in 3D</title>
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+    
+            #map {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+    </head>
+<body>
+ 
+<div id='map'></div>
+
+
+
+<script>
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoibWFwYm94bWF4IiwiYSI6ImNqbnY4MHM3azA2ZmkzdnBnMThvNzRoZ28ifQ.IffqPZGkhcdPjnZ2dmSO6w';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/light-v10',
+    zoom: 12,
+    center: [121.13, 31.32]
+});
+ 
+map.on('load', function() {
+    // Add Mapillary sequence layer.
+    // https://www.mapillary.com/developer/tiles-documentation/#sequence-layer
+    map.addLayer({
+        "id": "PROPL",
+        "type": "fill",
+        "source": {
+            "type": "vector",
+            "scheme":"tms",
+            "tiles": ["http://localhost:8080/geoserver/gwc/service/tms/1.0.0/myTest%3APROPL@EPSG%3A900913@pbf/{z}/{x}/{y}.pbf"],
+            "minzoom": 1,
+            "maxzoom": 20
+        },
+        "source-layer": "PROPL",
+        "paint": {
+            "fill-color":"#088",
+            "fill-opacity":0.8
+        }
+    });
+});
+ 
+map.addControl(new mapboxgl.NavigationControl());
+</script>
+ 
+</body>
+</html>
